@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: nara
+  mail:
+    host: localhost
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+nara:
+  api:
+    url: https://apis.data.go.kr/1230000/ad/BidPublicInfoService
+    key: ae84b2b73c931a3378a5f8bcc0f845cc47512d64f365df5aca6affdc3a4f0a17
+  search:
+    # 검색 키워드 (단일 또는 쉼표(,)로 구분)
+    # 예: keyword: 교통카드
+    # 예: keyword: 교통카드,버스,지하철
+    keyword: 교통카드
+
+    days: 10                   # 조회 기간 (일)
+
+    # 수신 이메일 (단일 또는 쉼표(,)로 구분)
+    # 예: recipient: jhypark@lgcns.com
+    # 예: recipient: jhypark@lgcns.com,user2@lgcns.com,user3@lgcns.com
+    recipient: jhypark@lgcns.com

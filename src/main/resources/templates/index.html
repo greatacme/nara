@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나라장터 입찰공고 검색</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-button {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-button:active {
+            transform: translateY(0);
+        }
+
+        .results-section {
+            padding: 40px;
+        }
+
+        .result-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .bid-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .bid-card:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .bid-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .bid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            padding: 8px 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #555;
+        }
+
+        .bid-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .bid-url {
+            margin-top: 15px;
+        }
+
+        .bid-url a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .bid-url a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>나라장터 입찰공고 검색</h1>
+            <p class="subtitle">키워드로 입찰공고를 검색하세요</p>
+        </div>
+
+        <div class="search-section">
+            <form action="/search" method="post" class="search-form">
+                <input type="text" name="keyword" class="search-input"
+                       placeholder="검색할 키워드를 입력하세요 (예: 소프트웨어, 전산장비, 용역 등)"
+                       th:value="${keyword}" required>
+                <button type="submit" class="search-button">검색</button>
+            </form>
+        </div>
+
+        <div class="results-section" th:if="${results != null}">
+            <div class="result-info" th:if="${!results.isEmpty()}">
+                <strong th:text="'검색어: ' + ${keyword}"></strong> -
+                <span th:text="${results.size()} + '건의 입찰공고를 찾았습니다.'"></span>
+            </div>
+
+            <div th:if="${results.isEmpty()}" class="no-results">
+                검색 결과가 없습니다.
+            </div>
+
+            <div th:each="bid : ${results}" class="bid-card">
+                <div class="bid-number" th:text="'공고번호: ' + ${bid.bidNtceNo}"></div>
+                <div class="bid-title" th:text="${bid.bidNtceNm}"></div>
+
+                <div class="bid-info">
+                    <div class="info-item" th:if="${bid.bidNtceDt != null}">
+                        <span class="info-label">게시일시:</span>
+                        <span class="info-value" th:text="${bid.bidNtceDt}"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">공고기관:</span>
+                        <span class="info-value" th:text="${bid.ntceInsttNm}"></span>
+                    </div>
+                    <div class="info-item" th:if="${bid.dminsttNm != null}">
+                        <span class="info-label">수요기관:</span>
+                        <span class="info-value" th:text="${bid.dminsttNm}"></span>
+                    </div>
+                    <div class="info-item" th:if="${bid.bidBeginDt != null}">
+                        <span class="info-label">입찰시작일시:</span>
+                        <span class="info-value" th:text="${bid.bidBeginDt}"></span>
+                    </div>
+                    <div class="info-item" th:if="${bid.bidClseDt != null}">
+                        <span class="info-label">입찰마감일시:</span>
+                        <span class="info-value" th:text="${bid.bidClseDt}"></span>
+                    </div>
+                    <div class="info-item" th:if="${bid.opengDt != null}">
+                        <span class="info-label">개찰일시:</span>
+                        <span class="info-value" th:text="${bid.opengDt}"></span>
+                    </div>
+                    <div class="info-item" th:if="${bid.totPrdprc != null}">
+                        <span class="info-label">총 예정가격:</span>
+                        <span class="info-value" th:text="${bid.totPrdprc} + '원'"></span>
+                    </div>
+                </div>
+
+                <div class="bid-url" th:if="${bid.bidNtceUrl != null}">
+                    <a th:href="${bid.bidNtceUrl}" target="_blank">공고 상세보기 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
