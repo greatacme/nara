@@ -48,7 +48,8 @@ public class BidService {
                     "/getBidPblancListInfoThngPPSSrch",    // 물품
                     "/getBidPblancListInfoServcPPSSrch",   // 용역
                     "/getBidPblancListInfoCnstwkPPSSrch",  // 공사
-                    "/getBidPblancListInfoFrgcptPPSSrch"   // 외자
+                    "/getBidPblancListInfoFrgcptPPSSrch",  // 외자
+                    "/getBidPblancListInfoEtcPPSSrch"      // 기타
             };
 
             for (String endpoint : endpoints) {

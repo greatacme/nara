@@ -75,6 +75,7 @@ java -jar build/libs/nara-0.0.1-SNAPSHOT.jar
   - 용역 (getBidPblancListInfoServcPPSSrch)
   - 공사 (getBidPblancListInfoCnstwkPPSSrch)
   - 외자 (getBidPblancListInfoFrgcptPPSSrch)
+  - 기타 (getBidPblancListInfoEtcPPSSrch)
 - **게시일시 기준 정렬**: 최신 공고가 먼저 표시
 - **HTML 이메일**: 보기 좋은 형식으로 이메일 전송
 - **설정 파일 기반**: 코드 수정 없이 조회 조건 변경 가능

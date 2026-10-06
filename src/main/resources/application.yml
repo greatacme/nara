@@ -11,6 +11,15 @@ spring:
           starttls:
             enable: false
 
+logging:
+  file:
+    name: logs/nara.log
+  logback:
+    rollingpolicy:
+      max-history: 30
+      file-name-pattern: logs/nara.log.%d{yyyy-MM-dd}.%i
+      clean-history-on-start: true
+
 nara:
   api:
     url: https://apis.data.go.kr/1230000/ad/BidPublicInfoService
@@ -19,9 +28,9 @@ nara:
     # 검색 키워드 (단일 또는 쉼표(,)로 구분)
     # 예: keyword: 교통카드
     # 예: keyword: 교통카드,버스,지하철
-    keyword: 교통카드,대중교통,인천버스,시내버스
+    keyword: 교통카드,대중교통,태그리스,EMV,예약발매,한국철도공사
 
-    days: 10                   # 조회 기간 (일)
+    days: 30                   # 조회 기간 (일)
 
     # 수신 이메일 (단일 또는 쉼표(,)로 구분)
     # 예: recipient: jhypark@lgcns.com
